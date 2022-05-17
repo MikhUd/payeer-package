@@ -1,0 +1,36 @@
+{
+    "name": "mikhud/payeer-package",
+    "description": "API for payeer",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "m.udintsev",
+            "email": "mikhail.udintsev@yandex.ru",
+            "homepage": "https://github.com/MikhUd"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MikhUd\\PayeerPackage\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MikhUd\\PayeerPackage\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "psalm/phar": "^4.23"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "preferred-install": "dist"
+    }
+}
