@@ -24,13 +24,22 @@
         "php": "^8.0"
     },
     "require-dev": {
+        "pestphp/pest": "^1.21",
         "psalm/phar": "^4.23"
+    },
+    "scripts": {
+        "analyze": "./vendor/bin/psalm --show-info=true",
+        "test": "./vendor/bin/pest",
+        "test-coverage": "./vendor/bin/pest --coverage"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true,
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
