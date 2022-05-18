@@ -4,17 +4,27 @@ declare(strict_types=1);
 
 namespace MikhUd\PayeerPackage;
 
-use Exception;
 use MikhUd\PayeerPackage\Contracts\RequestContract;
+use MikhUd\PayeerPackage\Exceptions\PayeerException;
 
+/**
+ * Класс Request.
+ */
 class Request implements RequestContract
 {
-    const api_params = [
-        'key' => 'api_secret_key',
-        'id' => 'bd443f00-092c-4436-92a4-a704ef679e24'
-    ];
-
+    /**
+     * Конструктор.
+     *
+     * @param array $errors
+     * 
+     * @return void
+     */
     public function __construct(
+        /** @var string API id для запроса к Payeer. */
+        private string $api_id,
+        /** @var string API secret key для запроса к Payeer. */
+        private string $api_secret,
+        /** @var array Массив ошибок от запросов к API Payeer */
         private array $errors
     ) {}
 
@@ -28,11 +38,12 @@ class Request implements RequestContract
     public function sendRequest(array $request = []): array
     {
         $msec = round(microtime(true) * 1000);
+
         $request['post']['ts'] = $msec;
 
         $post = json_encode($request['post']);
 
-        $sign = hash_hmac('sha256', $request['method'] . $post, self::api_params['key']);
+        $sign = hash_hmac('sha256', $request['method'] . $post, $this->api_secret);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://payeer.com/api/trade/" . $request['method']);
@@ -45,16 +56,20 @@ class Request implements RequestContract
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Content-Type: application/json",
-            "API-ID: " . self::api_params['id'],
+            "API-ID: " . $this->api_id,
             "API-SIGN: " . $sign
         ]);
 
         $response = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
-        if ($response['success'] !== true) {
+        if (!$response['success']) {
             $this->errors = $response['error'];
-            throw new Exception($response['error']['code']);
+
+            match ($response['error']['code']) {
+                'INVALID_SIGNATURE' => throw PayeerException::invalidSignature($this->api_id, $this->api_secret),
+                default => throw new PayeerException('Something went wrong', $response['error']['code'])
+            };
         }
 
         return $response;

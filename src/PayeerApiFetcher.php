@@ -6,11 +6,39 @@ namespace MikhUd\PayeerPackage;
 
 use MikhUd\PayeerPackage\Contracts\PayeerApiFetcherContract;
 
+/**
+ * Класс PayeerApiFetcher.
+ */
 class PayeerApiFetcher implements PayeerApiFetcherContract
 {
+    /**
+     * Конструктор.
+     *
+     * @param Request $request
+     * 
+     * @return void
+     */
     public function __construct(
         private Request $request
     ) {}
+
+    /**
+     * Отправка запроса.
+     *
+     * @param string $method
+     * @param array $request
+     * 
+     * @return array
+     */
+    private function sendRequest(string $method, array $request = []): array
+    {
+        $fields = [
+            'method' => $method
+        ];
+        $fields += $request;
+
+        return $this->request->sendRequest($fields); 
+    }
 
     /**
      * Проверка соединения, получение времени сервера.
@@ -19,7 +47,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getTime(): array
     {
-        return [];
+        return $this->sendRequest('time');
     }
 
     /**
@@ -31,7 +59,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getInfo(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('info', $request);
     }
 
     /**
@@ -43,7 +71,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getOrders(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('orders', $request);
     }
 
     /**
@@ -53,7 +81,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getAccount(): array
     {
-        return [];
+        return $this->sendRequest('account');
     }
 
     /**
@@ -65,7 +93,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function createOrder(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('order_create', $request);
     }
 
     /**
@@ -77,7 +105,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function cancelOrder(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('order_cancel', $request);
     }
 
     /**
@@ -89,7 +117,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function cancelOrders(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('orders_cancel', $request);
     }
 
     /**
@@ -101,7 +129,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getOrderStatus(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('order_status', $request);
     }
 
     /**
@@ -113,7 +141,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getMyOrders(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('my_orders', $request);
     }
 
     /**
@@ -123,9 +151,9 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      * 
      * @return array
      */
-    public function getTickers(array $request = []): array
+    public function getTicker(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('ticker', $request);
     }
 
     /**
@@ -137,7 +165,7 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getMyHistory(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('my_history', $request);
     }
 
     /**
@@ -149,6 +177,6 @@ class PayeerApiFetcher implements PayeerApiFetcherContract
      */
     public function getMyTrades(array $request = []): array
     {
-        return [];
+        return $this->sendRequest('my_trades', $request);
     }
 }

@@ -90,7 +90,7 @@ interface PayeerApiFetcherContract
      * 
      * @return array
      */
-    public function getTickers(array $request): array;
+    public function getTicker(array $request): array;
 
     /**
      * Получение истории своих ордеров с возможностью фильтрации и постраничной загрузки.
