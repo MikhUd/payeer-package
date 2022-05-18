@@ -15,16 +15,15 @@ class Request implements RequestContract
     /**
      * Конструктор.
      *
+     * @param string $api_id
+     * @param string $api_secret
      * @param array $errors
      * 
      * @return void
      */
     public function __construct(
-        /** @var string API id для запроса к Payeer. */
         private string $api_id,
-        /** @var string API secret key для запроса к Payeer. */
         private string $api_secret,
-        /** @var array Массив ошибок от запросов к API Payeer */
         private array $errors
     ) {}
 
